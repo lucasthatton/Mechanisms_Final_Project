@@ -201,10 +201,19 @@ begin
 		func = applyConstraint(func, vL)
 		:(($(vL.I),$(vL.Q1), $(vL.Q2)) -> [$(func.x); $(func.y)])
 	end
+
+	function generateFunction(vL::VectorLoop, V::briVec, in1::Symbol, in2::Symbol)
+		func = deepcopy(V)
+		func = applyConstraint(func, vL)
+		:(($(in1), $(in2),$(vL.Q1), $(vL.Q2)) -> [$(func.x); $(func.y)])
+	end
 	
 
 	
 end
+
+# ╔═╡ 89c15ddb-8660-48a4-92f7-73748e2f704a
+
 
 # ╔═╡ 8f03206c-c40d-48d6-85f9-1ff2cd45ad2f
 normalizeDegree(X) = mod(X, 2*pi).*(180/pi)
@@ -231,15 +240,6 @@ md"""
 # ╔═╡ b79e7e19-1c12-4730-9c77-f8f21d1c4d56
 
 
-# ╔═╡ d01997fd-4238-4256-87df-69f47cf99fc9
-
-
-# ╔═╡ 7162bd98-cb8e-40c2-bc5d-b010a3cc68c2
-
-
-# ╔═╡ 947d31dd-49bc-4b41-86e6-fc830902c94e
-
-
 # ╔═╡ 7389633a-181d-411e-ae8d-d1c8d96cecc0
 function v16(θ2, θ3, knowns) 
 	r2 = knowns["r2"]
@@ -251,23 +251,46 @@ function v16(θ2, θ3, knowns)
 	return (r16, θ16)
 end
 
-# ╔═╡ 755f77f8-1cf2-4ebf-ab1f-f6502416a89e
+# ╔═╡ 07cbada8-3b09-49ac-9d02-9454fb440223
 
 
 # ╔═╡ 657c46d1-9b1d-4ba3-aa82-e438ef4b6a3f
 vLoop = VectorLoop(:θ2, :θ3, :θ4)
 
 # ╔═╡ 5ac7b04e-ac71-4c95-bc7c-e4a7220b4019
-vLoop2 = VectorLoop(:X, :θ5, :θ6, [:(θ15 = θ4), :(r26 = r3/2), :(θ26 = θ3), :(θ2 = X[1]), :(θ3 = X[2])])
+vLoop2 = VectorLoop(:X, :θ5, :θ6, [:(θ15 = θ4), :(r26 = r3/2), :(θ26 = θ3), :(θ2 = X[1]), :(θ3 = X[2]), :(θ4 = X[3])])
+
+# ╔═╡ 2f12e6c0-ac8a-4d47-a26a-f9a481419929
+# applyConstraint(loopEq2, vLoop2)
+
+# ╔═╡ 14098de6-1068-4b76-a643-9648775faa54
+
 
 # ╔═╡ f871ad94-c0c3-4829-9184-826d40728ce1
 
 
-# ╔═╡ cf17a97f-bb9e-4512-bbed-1242df3a4ec1
+# ╔═╡ ac676b44-ff07-4702-b59b-438ac06e78be
+
+
+# ╔═╡ c382ffa6-90bb-46c9-98c5-6ce94aac28b2
+md"""
+r15 = r1 * 0.625;
+r36 = r3 * 0.5;
+r5 = r1 * 0.625;
+r6 = r1 * 0.5;
+"""
+
+# ╔═╡ 3713f2c3-0959-4587-968d-2be19d7e192e
+0.625*4
+
+# ╔═╡ 18843812-e2c8-4985-8383-fa900f53f078
+
+
+# ╔═╡ 7979ed28-ff9f-460e-a556-a008bc9b200c
 
 
 # ╔═╡ 8d4781cc-304d-40e4-bcbc-a9eedc3ea5a4
-a = 850/4
+a = 200.5
 
 # ╔═╡ eef5ad52-873d-4ca3-a470-8d8722ea5350
 knowns = Dict(
@@ -277,18 +300,24 @@ knowns = Dict(
 	"r4" => 5*a,
 	"θ1" => 0, 
 	"r15" => 300,
-	"r5" => 600,
-	"r6" => 800,
+	"r5" => 500,
+	"r6" => 450,
 )
 
 # ╔═╡ a58fa4f0-b06e-4a2d-8a4a-2682c09d77b8
 
 
 # ╔═╡ 67dfab9f-9a11-4404-a321-21df80d2b40a
-@bind v Slider(1:25)
+
+
+# ╔═╡ f2f02721-fae6-4300-8a06-87e304ebacc3
+# θmin = θ2s[P1y[end:-1:1] .>min_val][1]
+
+# ╔═╡ 9504fe0f-0948-4d62-9f5f-97e8fa941ee4
+# θmax = θ2s[P1y[end:-1:1] .<max_val][end]
 
 # ╔═╡ 76684659-6518-4aaa-9997-e768bfaf6202
-@bind w Slider(845:0.1:855)
+@bind w Slider(801:0.1:808)
 
 # ╔═╡ 3b32e725-620c-4f33-a073-211751ff1444
 begin
@@ -296,23 +325,39 @@ begin
 	max_val = min_val + 4
 end
 
-# ╔═╡ fff60b91-0e7a-4436-994b-4aeac04af82b
-945/1350
+# ╔═╡ a672eb9b-77f8-4d63-afdc-0cb9851a0963
+begin
+	θmin = 0.643
+	θmax = 1.683
+end
 
-# ╔═╡ d62d1a4b-18f4-454b-83f6-4a684aa462c4
-800/1100
+# ╔═╡ 1b05e8db-46e8-4394-a902-39cd06c36a97
+let
+	xs = 1:1300
+	ys = [x^2 for x in xs]
+	plot(xs, ys)
+end
 
-# ╔═╡ b58cea7b-3b8d-49cd-943e-6a252ae04729
-710/1000
+# ╔═╡ 0bb59212-5162-4142-9e1b-837b0036e373
+foo(x) = x+ 1
 
-# ╔═╡ eb320dbf-53e7-4853-b0b7-a475f5bf6623
-850/0.71
+# ╔═╡ abb8c636-f91c-4dfe-96cf-789c810dc284
 
-# ╔═╡ 6a5c00a5-746b-473c-b9d7-e6fcb5e343cc
-566/900
 
-# ╔═╡ 2f989556-e418-452c-9faf-4eb4ee16ccf2
-850/2
+# ╔═╡ 7337449e-d329-48b3-a0a5-f3e8eb4fa735
+bar(x) = x^2
+
+# ╔═╡ 5a7d6e45-a7fd-486c-ae41-295745ac4205
+
+
+# ╔═╡ c377e45f-b77f-4d09-9ecc-f85d6031971d
+b = (x, y) -> begin x[1] + y[2] end
+
+# ╔═╡ 9e7c81e6-8223-429a-bdbe-0f39cfb39446
+b([1;2], (3, 4))
+
+# ╔═╡ 444c783f-8b9d-4219-ad1e-3b0b6c03c3fc
+
 
 # ╔═╡ 642cb5c4-a795-4193-a3f2-0d77756d00db
 begin
@@ -358,20 +403,32 @@ function plotVecs(Vs::Vector{Vec})
 	return p
 end
 
-# ╔═╡ 8b26ccd2-a40d-4ee0-94ca-3bd02a9f9c01
-
+# ╔═╡ b581cbd2-ea65-4cbf-8ce8-914a8d845e5b
+function plotVecs!(Vs::Vector{Vec}, p::Plots.Plot)
+	x, y = lineSegment(0, 0, Vs[1])
+	if (Vs[1].sign > 0)
+		point = [x[2], y[2]]
+	else
+		point = [x[1], y[1]]
+	end
+	plot!(p, x, y, arrow=true)
+	for V in Vs[2:end]
+		x, y = lineSegment(point[1], point[2], V)
+		plot!(p, x, y, arrow=true)
+		if (V.sign > 0)
+			point = [x[2], y[2]]
+		else
+			point = [x[1], y[1]]
+		end
+	end
+	return p
+end
 
 # ╔═╡ 8ffbedc2-b4d0-4986-89b4-a6056998bc8d
-inputs = collect(0.643:0.005:1.772)
+inputs = collect(θmin:0.005:θmax)
 
 # ╔═╡ f4748d85-5c7a-4781-ab52-c4ba57245a31
 @bind n Slider(length(inputs):-1:1)
-
-# ╔═╡ b3820908-71db-4ba9-8ea6-0524c0f69212
-
-
-# ╔═╡ 396196a6-ce56-4e7f-b8fc-9ce57d5a1784
-
 
 # ╔═╡ 71d613cb-e503-4362-8942-13203aa8e078
 Base.:-(V::Vec) = Vec(V.R, V.θ, V.sign*-1)
@@ -407,6 +464,7 @@ begin
 end
 
 # ╔═╡ c7745aba-18c2-4cef-a9c2-062985c40083
+# Use newton method to solve for θ3 and θ4
 begin
 	y = []
 	Xi = [π; 3.6π/4]
@@ -420,37 +478,69 @@ begin
 end
 
 # ╔═╡ bfbb7861-d946-4747-8031-4ee7e4d14b03
-θ3 = [x[1] for x in y]
+θ3s = [x[1] for x in y]
 
 # ╔═╡ 2d31c9f2-f7f2-4590-9750-613ac99e5336
-θ4 = [x[2] for x in y]
+θ4s = [x[2] for x in y]
 
 # ╔═╡ ece8e1ae-cb9f-4b7a-9e84-d1821dd0d25a
 loopEq2 = V2 + V26 + V6 + V5 + V15 - V1
 
-# ╔═╡ 2f12e6c0-ac8a-4d47-a26a-f9a481419929
-applyConstraint(loopEq2, vLoop2)
-
 # ╔═╡ df3d9d20-20cc-42b9-b935-2b635dde2d7d
-θ2 = inputs
+θ2s = inputs
 
 # ╔═╡ 3f4531f5-bfd0-450c-ad10-49bc7b6da6fb
 begin
 	L2_2 = applyConstraint(loopEq2, vLoop2)
 	L3_2 = applyConstraint(L2_2, knowns)
 	exp2 = generateFunction(vLoop2, L3_2)
-	input2 = collect(zip(θ2, θ3))
 	f2 = eval(exp2)
+	f2([1; 2; 3], 2, 3)
+	inputs2 = collect(zip(θ2s, θ3s, θ4s))
 	g2(input, x) = f2(input, x[1], x[2])
 end	
 
+# ╔═╡ ceda3ead-2960-4e5f-90fe-c62a2c7c7172
+begin
+	y2 = []
+	Xi_2 = [5π/4; 0]
+	for input in inputs2
+		h2 = (x) -> g2(input, x)
+		Xn_2 = iterativeSolve(h2, Xi_2, 0.1)
+		Xi_2 = normalizeRad.(Xn_2)
+		push!(y2, Xi_2)
+	end
+	y2
+end
+
+# ╔═╡ 0ea4aa77-82f0-464b-ac06-3d27f27fd5a5
+θ5s = [x[1] for x in y2]
+
+# ╔═╡ 0fe05f85-05ed-42f1-87cb-e195af27f4c5
+θ6s = [x[2] for x in y2]
+
+# ╔═╡ 755f77f8-1cf2-4ebf-ab1f-f6502416a89e
+# Define Vector of Vecs, used to plot the second vector loop
+begin
+	r16, θ16 = v16(θ2s[n], θ3s[n], knowns)
+	Vecs2 = [Vec(r16, θ16), Vec(knowns["r6"], θ6s[n]), Vec(knowns["r5"], θ5s[n]), Vec(knowns["r15"], θ4s[n]), Vec(knowns["r1"], knowns["θ1"], -1)] 
+end
+
+# ╔═╡ 0c300d37-01b6-43de-aeb9-78f9ac7c2046
+knowns["r2"]*sin(θ2s[n]) + knowns["r3"]/2*sin(θ3s[n]) + knowns["r6"]*sin(θ6s[n])
+
+# ╔═╡ 468313e9-c3f2-4198-9188-395170fa4e37
+θ6s
+
 # ╔═╡ 1491c558-0212-4293-a231-c3d1fec27004
-Vecs = [Vec(knowns["r2"], θ2[n]), Vec(knowns["r3"], θ3[n]), Vec(knowns["r4"], θ4[n]), Vec(knowns["r1"], knowns["θ1"], -1)]
+Vecs = [Vec(knowns["r2"], θ2s[n]), Vec(knowns["r3"], θ3s[n]), Vec(knowns["r4"], θ4s[n]), Vec(knowns["r1"], knowns["θ1"], -1)]
 
 # ╔═╡ 7a056383-09df-4fd2-b9a5-08e5b045c372
 begin 
 	p = plotVecs(Vecs)
-	plot!(p, xlims=(-900, 900), ylims=(-200,1300))
+	plotVecs!(Vecs2, p)
+	plot!(p, xlims=(-900, 1700), ylims=(-200,1300))
+	# plotVecs(Vecs2)
 end
 
 # ╔═╡ 668f43a3-3309-4226-8768-4f2077a94224
@@ -475,32 +565,77 @@ begin
 	P1x = []
 	P1y = []
 	for i in 1:length(inputs)
-		x_p, y_p = hP1(inputs[i], knowns, θ3[i])
+		x_p, y_p = hP1(inputs[i], knowns, θ3s[i])
 		push!(P1x, x_p)
 		push!(P1y, y_p)
 	end
+	# P1x = P1x[end:-1:1]
+	# P1y = P1y[end:-1:1]
 end	
 
-# ╔═╡ 7979ed28-ff9f-460e-a556-a008bc9b200c
-begin
-	P2x = P1x[end:-1:1]
-	P2y = P1y[end:-1:1]
-end
-
 # ╔═╡ 16deecc2-be6e-46c0-89c7-09030fba474f
-maximum(P2x[(P2y .> min_val) .& (P2y .< max_val)]) - minimum(P2x[(P2y .> min_val) .& (P2y .< max_val)])
+maximum(P1x[(P1y .> min_val) .& (P1y .< max_val)]) - minimum(P1x[(P1y .> min_val) .& (P1y .< max_val)])
 
 # ╔═╡ 91a74b38-fecc-4366-b971-590c7bd0feca
 begin
-	plot(P2x, P2y, legend=false)
+	p2 = plot(P1x, P1y, legend=false)
+	# plot!(P2x, P2y)
 	plot!(xlims=(-100,900), ylims=(min_val, max_val))
+	# plot!(xlims=(-100,900), ylims=(790, 1500))
+
 end
 
-# ╔═╡ 6f143d47-8522-40cb-aa0f-6be0a8f967b7
-length(P1x)
+# ╔═╡ 0e6322ec-2b34-4db8-8efb-0bd12d7ab55f
+P1x
+
+# ╔═╡ 349d94cd-c98a-4e20-ae7d-f0c098186754
+P1y
+
+# ╔═╡ 60c94468-34c7-46ad-9d48-fc647c6ef292
+plot(inputs, P1y)
+
+# ╔═╡ bbd94a0a-26c0-4e3b-819d-cd5662f201b1
+plot(inputs, P1x)
+
+# ╔═╡ 3da99c9f-6fd9-41c2-8f2e-3e2a7e38f8bb
+maximum(P1x)-minimum(P1x)
+
+# ╔═╡ 91b569b4-62a1-47d7-974c-041256540876
+knowns
 
 # ╔═╡ 97601fc3-4173-4866-817f-f87f7be38c4a
+function hP2(θ2, θ3, θ6, knowns)
+	r2 = knowns["r2"]
+	rp1 = knowns["r3"]/2
+	r6 = knowns["r6"]
 
+	x = r2*cos(θ2) + rp1*cos(θ3) +r6*cos(θ6)
+	y = r2*sin(θ2) + rp1*sin(θ3) +r6*sin(θ6)
+	
+	return (x, y)
+end
+
+# ╔═╡ 71dfb83a-19bf-43f7-8481-808f983173bf
+hP2(θ2s[n], θ3s[n], θ6s[n], knowns)
+
+# ╔═╡ af14d945-d404-438b-9aa8-062935f1bddc
+begin 
+	P2x = []
+	P2y = []
+	for i in 1:length(inputs)
+		x_p, y_p = hP2(inputs[i], θ3s[i], θ6s[i], knowns)
+		push!(P2x, x_p)
+		push!(P2y, y_p)
+	end
+	# P2x = P2x[end:-1:1]
+	# P2y = P2y[end:-1:1]
+end	
+
+# ╔═╡ 1fb0f76a-a222-44db-a659-a054b8c0ae09
+P2y
+
+# ╔═╡ 6568b63d-df11-408a-ae46-1db342f8a867
+P1y ==P2y
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1479,6 +1614,7 @@ version = "0.9.1+5"
 
 # ╔═╡ Cell order:
 # ╟─d246834a-d179-11ec-22e8-d35b2843840a
+# ╠═89c15ddb-8660-48a4-92f7-73748e2f704a
 # ╟─c22d6920-6fd1-4d47-81be-a2b04aeac1b4
 # ╠═0abc6a84-cf01-44fa-a9cf-15ca8888318d
 # ╠═f360bea6-fd71-4ecc-9fdd-34fd948398ac
@@ -1491,44 +1627,58 @@ version = "0.9.1+5"
 # ╠═b79e7e19-1c12-4730-9c77-f8f21d1c4d56
 # ╠═981d766e-953b-4999-83c4-100b67d8340b
 # ╠═ece8e1ae-cb9f-4b7a-9e84-d1821dd0d25a
-# ╠═d01997fd-4238-4256-87df-69f47cf99fc9
-# ╠═7162bd98-cb8e-40c2-bc5d-b010a3cc68c2
-# ╠═947d31dd-49bc-4b41-86e6-fc830902c94e
-# ╟─7389633a-181d-411e-ae8d-d1c8d96cecc0
+# ╠═7389633a-181d-411e-ae8d-d1c8d96cecc0
 # ╠═755f77f8-1cf2-4ebf-ab1f-f6502416a89e
+# ╠═07cbada8-3b09-49ac-9d02-9454fb440223
 # ╠═657c46d1-9b1d-4ba3-aa82-e438ef4b6a3f
 # ╠═5ac7b04e-ac71-4c95-bc7c-e4a7220b4019
 # ╠═2f12e6c0-ac8a-4d47-a26a-f9a481419929
+# ╠═14098de6-1068-4b76-a643-9648775faa54
 # ╠═f871ad94-c0c3-4829-9184-826d40728ce1
+# ╠═ac676b44-ff07-4702-b59b-438ac06e78be
 # ╠═7a056383-09df-4fd2-b9a5-08e5b045c372
-# ╠═cf17a97f-bb9e-4512-bbed-1242df3a4ec1
+# ╠═71dfb83a-19bf-43f7-8481-808f983173bf
+# ╠═0c300d37-01b6-43de-aeb9-78f9ac7c2046
 # ╠═f4748d85-5c7a-4781-ab52-c4ba57245a31
+# ╠═c382ffa6-90bb-46c9-98c5-6ce94aac28b2
+# ╠═3713f2c3-0959-4587-968d-2be19d7e192e
+# ╠═eef5ad52-873d-4ca3-a470-8d8722ea5350
+# ╠═468313e9-c3f2-4198-9188-395170fa4e37
+# ╠═18843812-e2c8-4985-8383-fa900f53f078
 # ╠═7979ed28-ff9f-460e-a556-a008bc9b200c
 # ╠═8d4781cc-304d-40e4-bcbc-a9eedc3ea5a4
-# ╠═eef5ad52-873d-4ca3-a470-8d8722ea5350
 # ╠═a58fa4f0-b06e-4a2d-8a4a-2682c09d77b8
 # ╠═67dfab9f-9a11-4404-a321-21df80d2b40a
-# ╠═76684659-6518-4aaa-9997-e768bfaf6202
 # ╠═3b32e725-620c-4f33-a073-211751ff1444
 # ╠═16deecc2-be6e-46c0-89c7-09030fba474f
+# ╠═f2f02721-fae6-4300-8a06-87e304ebacc3
+# ╠═9504fe0f-0948-4d62-9f5f-97e8fa941ee4
+# ╠═76684659-6518-4aaa-9997-e768bfaf6202
+# ╠═a672eb9b-77f8-4d63-afdc-0cb9851a0963
+# ╠═1b05e8db-46e8-4394-a902-39cd06c36a97
 # ╠═91a74b38-fecc-4366-b971-590c7bd0feca
+# ╠═0e6322ec-2b34-4db8-8efb-0bd12d7ab55f
+# ╠═349d94cd-c98a-4e20-ae7d-f0c098186754
+# ╠═1fb0f76a-a222-44db-a659-a054b8c0ae09
+# ╠═6568b63d-df11-408a-ae46-1db342f8a867
+# ╠═0bb59212-5162-4142-9e1b-837b0036e373
+# ╠═abb8c636-f91c-4dfe-96cf-789c810dc284
+# ╠═7337449e-d329-48b3-a0a5-f3e8eb4fa735
 # ╠═c7745aba-18c2-4cef-a9c2-062985c40083
-# ╠═6f143d47-8522-40cb-aa0f-6be0a8f967b7
-# ╠═fff60b91-0e7a-4436-994b-4aeac04af82b
-# ╠═d62d1a4b-18f4-454b-83f6-4a684aa462c4
-# ╠═b58cea7b-3b8d-49cd-943e-6a252ae04729
-# ╠═eb320dbf-53e7-4853-b0b7-a475f5bf6623
-# ╠═6a5c00a5-746b-473c-b9d7-e6fcb5e343cc
-# ╠═2f989556-e418-452c-9faf-4eb4ee16ccf2
+# ╠═ceda3ead-2960-4e5f-90fe-c62a2c7c7172
+# ╠═0ea4aa77-82f0-464b-ac06-3d27f27fd5a5
+# ╠═0fe05f85-05ed-42f1-87cb-e195af27f4c5
 # ╠═08c067c9-99b3-4c05-a8e5-8eaddd9602ff
 # ╠═3f4531f5-bfd0-450c-ad10-49bc7b6da6fb
+# ╠═5a7d6e45-a7fd-486c-ae41-295745ac4205
+# ╠═c377e45f-b77f-4d09-9ecc-f85d6031971d
+# ╠═9e7c81e6-8223-429a-bdbe-0f39cfb39446
+# ╠═444c783f-8b9d-4219-ad1e-3b0b6c03c3fc
 # ╟─642cb5c4-a795-4193-a3f2-0d77756d00db
-# ╟─975ae57c-a6c7-4003-9d19-6de534b9f229
+# ╠═975ae57c-a6c7-4003-9d19-6de534b9f229
+# ╠═b581cbd2-ea65-4cbf-8ce8-914a8d845e5b
 # ╟─500cfb89-a89d-4d87-967c-2c8708d2fffa
-# ╠═8b26ccd2-a40d-4ee0-94ca-3bd02a9f9c01
 # ╠═8ffbedc2-b4d0-4986-89b4-a6056998bc8d
-# ╠═b3820908-71db-4ba9-8ea6-0524c0f69212
-# ╠═396196a6-ce56-4e7f-b8fc-9ce57d5a1784
 # ╠═bfbb7861-d946-4747-8031-4ee7e4d14b03
 # ╠═2d31c9f2-f7f2-4590-9750-613ac99e5336
 # ╠═71d613cb-e503-4362-8942-13203aa8e078
@@ -1537,8 +1687,13 @@ version = "0.9.1+5"
 # ╠═df3d9d20-20cc-42b9-b935-2b635dde2d7d
 # ╠═668f43a3-3309-4226-8768-4f2077a94224
 # ╠═db92e8e0-7564-4e5f-af27-b85e698d1e76
+# ╠═af14d945-d404-438b-9aa8-062935f1bddc
+# ╠═60c94468-34c7-46ad-9d48-fc647c6ef292
+# ╠═bbd94a0a-26c0-4e3b-819d-cd5662f201b1
+# ╠═3da99c9f-6fd9-41c2-8f2e-3e2a7e38f8bb
 # ╟─7e3e9460-9078-446e-8eec-f68602726c1a
 # ╠═22c88270-1f9a-48bc-909a-4448b4d411e7
+# ╠═91b569b4-62a1-47d7-974c-041256540876
 # ╠═97601fc3-4173-4866-817f-f87f7be38c4a
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
