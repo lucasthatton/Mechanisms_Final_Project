@@ -264,12 +264,20 @@ vLoop2 = VectorLoop(:X, :θ5, :θ6, [:(θ15 = θ4), :(r26 = r3/2), :(θ26 = θ3)
 # applyConstraint(loopEq2, vLoop2)
 
 # ╔═╡ 14098de6-1068-4b76-a643-9648775faa54
+md"""
+![The San Juan Mountains are beautiful!](/loop1.png)
+"""
+
+# ╔═╡ ec063e2a-845a-49f1-a489-b9e276e431de
 
 
 # ╔═╡ f871ad94-c0c3-4829-9184-826d40728ce1
 
 
 # ╔═╡ ac676b44-ff07-4702-b59b-438ac06e78be
+
+
+# ╔═╡ 595867f9-dc40-471d-8a8b-d02bf0b89f95
 
 
 # ╔═╡ c382ffa6-90bb-46c9-98c5-6ce94aac28b2
@@ -572,6 +580,12 @@ begin
 	# P1x = P1x[end:-1:1]
 	# P1y = P1y[end:-1:1]
 end	
+
+# ╔═╡ 78bc3c87-cb8d-425b-916e-3e1cef6fd666
+p1min = (P1x[end], P1y[end])
+
+# ╔═╡ fe074266-8c79-4d87-972e-2f69f9249dae
+p1max = (P1x[1], P1y[1])
 
 # ╔═╡ 16deecc2-be6e-46c0-89c7-09030fba474f
 maximum(P1x[(P1y .> min_val) .& (P1y .< max_val)]) - minimum(P1x[(P1y .> min_val) .& (P1y .< max_val)])
@@ -1634,9 +1648,13 @@ version = "0.9.1+5"
 # ╠═5ac7b04e-ac71-4c95-bc7c-e4a7220b4019
 # ╠═2f12e6c0-ac8a-4d47-a26a-f9a481419929
 # ╠═14098de6-1068-4b76-a643-9648775faa54
+# ╠═ec063e2a-845a-49f1-a489-b9e276e431de
 # ╠═f871ad94-c0c3-4829-9184-826d40728ce1
 # ╠═ac676b44-ff07-4702-b59b-438ac06e78be
 # ╠═7a056383-09df-4fd2-b9a5-08e5b045c372
+# ╠═595867f9-dc40-471d-8a8b-d02bf0b89f95
+# ╠═78bc3c87-cb8d-425b-916e-3e1cef6fd666
+# ╠═fe074266-8c79-4d87-972e-2f69f9249dae
 # ╠═71dfb83a-19bf-43f7-8481-808f983173bf
 # ╠═0c300d37-01b6-43de-aeb9-78f9ac7c2046
 # ╠═f4748d85-5c7a-4781-ab52-c4ba57245a31
