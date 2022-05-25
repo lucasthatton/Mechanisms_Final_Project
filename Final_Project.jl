@@ -567,13 +567,9 @@ begin
 	ylabel!(p1, "θ6 (degrees)")
 	title!(p1, "Angular rotation of tabletop as function of θ2")
 	plot!(legend=false)
-	savefig(p1, "angular_plot.png")
 	plot!(p1)
 
 end
-
-# ╔═╡ ac676b44-ff07-4702-b59b-438ac06e78be
-θ6s
 
 # ╔═╡ 0c300d37-01b6-43de-aeb9-78f9ac7c2046
 knowns["r2"]*sin(θ2s[n]) + knowns["r3"]/2*sin(θ3s[n]) + knowns["r6"]*sin(θ6s[n])
@@ -726,6 +722,41 @@ P2y
 
 # ╔═╡ 6568b63d-df11-408a-ae46-1db342f8a867
 P1y ==P2y
+
+# ╔═╡ b9e5fa4a-0b77-4e77-a164-0ad5bd832796
+function hCG(θ2, θ3, θ6, knowns, height)
+	rCG = knowns["r6"]/2
+	
+	p1 = hP1(θ2, knowns, θ3)
+	x = p1[1] + rCG*cos(θ6) + height*cos(θ6 + π)
+	y = p1[2] + rCG*sin(θ6) + height*sin(θ6 + π)
+	return (x, y)
+end
+
+# ╔═╡ 83e74d1b-2012-405d-b87e-7852335f2600
+begin
+	# Height of table's center of gravity relative to V6
+	height_CG = 150.19 # mm
+	
+	p_CG = ((θ2, θ3, θ6) -> hCG(θ2, θ3, θ6, knowns, height_CG)).(θ2s, θ3s, θ6s)
+	CG_x = [x[1] for x in p_CG]
+	CG_y = [x[2] for x in p_CG]
+
+	p3 = plot(θ2_norm, CG_y, ylims=(801.5, 805.5), legend=false)
+	xlabel!(p3, "θ2 (Degrees)")
+	ylabel!(p3, "Y position of C.G.")
+	title!(p3, "Vertical Displacement of Tabletop Center of Gravity")
+end
+
+# ╔═╡ 74cf756b-7c16-4576-b948-76938a7af7d3
+begin
+	p4 = plot(θ2_norm, CG_x, legend=false)
+	xlabel!(p4, "θ2 (Degrees)")
+	ylabel!(p4, "X position of C.G.")
+	title!(p4, "Horizontal Displacement of Tabletop Center of Gravity")
+
+	# CG(x)
+end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1730,7 +1761,8 @@ version = "0.9.1+5"
 # ╠═d52626fa-71cd-4153-89e3-9acb882668a8
 # ╠═9aef3d30-95c8-479e-ab8f-84cc4c3444b9
 # ╠═f871ad94-c0c3-4829-9184-826d40728ce1
-# ╠═ac676b44-ff07-4702-b59b-438ac06e78be
+# ╠═83e74d1b-2012-405d-b87e-7852335f2600
+# ╠═74cf756b-7c16-4576-b948-76938a7af7d3
 # ╠═7a056383-09df-4fd2-b9a5-08e5b045c372
 # ╠═595867f9-dc40-471d-8a8b-d02bf0b89f95
 # ╠═f4748d85-5c7a-4781-ab52-c4ba57245a31
@@ -1798,5 +1830,6 @@ version = "0.9.1+5"
 # ╠═22c88270-1f9a-48bc-909a-4448b4d411e7
 # ╠═91b569b4-62a1-47d7-974c-041256540876
 # ╠═97601fc3-4173-4866-817f-f87f7be38c4a
+# ╠═b9e5fa4a-0b77-4e77-a164-0ad5bd832796
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
