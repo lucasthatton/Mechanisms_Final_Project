@@ -260,15 +260,23 @@ vLoop = VectorLoop(:θ2, :θ3, :θ4)
 # ╔═╡ 5ac7b04e-ac71-4c95-bc7c-e4a7220b4019
 vLoop2 = VectorLoop(:X, :θ5, :θ6, [:(θ15 = θ4), :(r26 = r3/2), :(θ26 = θ3), :(θ2 = X[1]), :(θ3 = X[2]), :(θ4 = X[3])])
 
+# ╔═╡ 1f645ad0-ff72-4133-8fda-143df753c536
+
+
 # ╔═╡ 2f12e6c0-ac8a-4d47-a26a-f9a481419929
 # applyConstraint(loopEq2, vLoop2)
 
 # ╔═╡ 14098de6-1068-4b76-a643-9648775faa54
 md"""
-![The San Juan Mountains are beautiful!](/loop1.png)
+![Loop 1!](https://github.com/brburrous/Mechanisms_Final_Project/blob/main/loop1.png?raw=true)
 """
 
-# ╔═╡ ec063e2a-845a-49f1-a489-b9e276e431de
+# ╔═╡ db329346-6d4e-4b4d-8b0e-cdda7fb48796
+md"""
+![loop 2](https://github.com/brburrous/Mechanisms_Final_Project/blob/main/loop2.png?raw=true)
+"""
+
+# ╔═╡ 39f6926e-3960-454a-832f-ff86804d56af
 
 
 # ╔═╡ f871ad94-c0c3-4829-9184-826d40728ce1
@@ -307,9 +315,10 @@ knowns = Dict(
 	"r3" => 2*a,
 	"r4" => 5*a,
 	"θ1" => 0, 
-	"r15" => 300,
-	"r5" => 500,
-	"r6" => 450,
+	"r15" => 5*a/2,
+	# "θ6" => 0,
+	"r5" => 5*a/2,
+	"r6" => 2*a,
 )
 
 # ╔═╡ a58fa4f0-b06e-4a2d-8a4a-2682c09d77b8
@@ -354,6 +363,12 @@ foo(x) = x+ 1
 
 # ╔═╡ 7337449e-d329-48b3-a0a5-f3e8eb4fa735
 bar(x) = x^2
+
+# ╔═╡ bc0a4010-433c-4890-98f4-4339bedc62ee
+
+
+# ╔═╡ bab95968-1233-4c82-9ef0-ec621adc954c
+
 
 # ╔═╡ 5a7d6e45-a7fd-486c-ae41-295745ac4205
 
@@ -433,7 +448,7 @@ function plotVecs!(Vs::Vector{Vec}, p::Plots.Plot)
 end
 
 # ╔═╡ 8ffbedc2-b4d0-4986-89b4-a6056998bc8d
-inputs = collect(θmin:0.005:θmax)
+inputs = collect(θmin:0.001745:θmax)
 
 # ╔═╡ f4748d85-5c7a-4781-ab52-c4ba57245a31
 @bind n Slider(length(inputs):-1:1)
@@ -475,7 +490,7 @@ end
 # Use newton method to solve for θ3 and θ4
 begin
 	y = []
-	Xi = [π; 3.6π/4]
+	Xi = [π; 3.3π/4]
 	for input in inputs
 		h = (x) -> g(input, x)
 		Xn = iterativeSolve(h, Xi, 0.05)
@@ -554,6 +569,9 @@ end
 # ╔═╡ 668f43a3-3309-4226-8768-4f2077a94224
 n
 
+# ╔═╡ 52446eaa-8993-4141-8198-e52f4a305eca
+
+
 # ╔═╡ 7e3e9460-9078-446e-8eec-f68602726c1a
 md"""
 ### Height of Point 1 vs angle
@@ -583,6 +601,35 @@ end
 
 # ╔═╡ 78bc3c87-cb8d-425b-916e-3e1cef6fd666
 p1min = (P1x[end], P1y[end])
+
+# ╔═╡ d52626fa-71cd-4153-89e3-9acb882668a8
+R5= let
+	θ15_min = (θ4s[end] - pi)
+	r1 = knowns["r1"] 
+	r15 = knowns["r15"]
+	p3x = r1 + r15*cos(θ15_min)
+	p3y = r15*sin(θ15_min)
+
+	p3min = (p3x, p3y)
+
+	r6 = knowns["r6"]
+	p1x = p1min[1]
+	p1y = p1min[2]
+
+	p2x = p1x + r6
+	p2y = p1y
+
+	y_R5 = p3y-p2y
+	x_R5 = p3x - p2x
+	mR5 = sqrt(y_R5^2 + x_R5^2)
+	θr5 = normalizeRad(atan(y_R5, x_R5))*180/pi
+	atan(y_R5, x_R5)*180/pi
+
+	mR5
+end
+
+# ╔═╡ 0c959ecb-ea01-4542-8794-db273fbac4cd
+R5
 
 # ╔═╡ fe074266-8c79-4d87-972e-2f69f9249dae
 p1max = (P1x[1], P1y[1])
@@ -644,6 +691,9 @@ begin
 	# P2x = P2x[end:-1:1]
 	# P2y = P2y[end:-1:1]
 end	
+
+# ╔═╡ ec063e2a-845a-49f1-a489-b9e276e431de
+plot(P2x, P2y)
 
 # ╔═╡ 1fb0f76a-a222-44db-a659-a054b8c0ae09
 P2y
@@ -1646,21 +1696,26 @@ version = "0.9.1+5"
 # ╠═07cbada8-3b09-49ac-9d02-9454fb440223
 # ╠═657c46d1-9b1d-4ba3-aa82-e438ef4b6a3f
 # ╠═5ac7b04e-ac71-4c95-bc7c-e4a7220b4019
+# ╠═1f645ad0-ff72-4133-8fda-143df753c536
 # ╠═2f12e6c0-ac8a-4d47-a26a-f9a481419929
-# ╠═14098de6-1068-4b76-a643-9648775faa54
-# ╠═ec063e2a-845a-49f1-a489-b9e276e431de
+# ╟─14098de6-1068-4b76-a643-9648775faa54
+# ╟─db329346-6d4e-4b4d-8b0e-cdda7fb48796
+# ╠═39f6926e-3960-454a-832f-ff86804d56af
+# ╠═d52626fa-71cd-4153-89e3-9acb882668a8
 # ╠═f871ad94-c0c3-4829-9184-826d40728ce1
 # ╠═ac676b44-ff07-4702-b59b-438ac06e78be
 # ╠═7a056383-09df-4fd2-b9a5-08e5b045c372
 # ╠═595867f9-dc40-471d-8a8b-d02bf0b89f95
+# ╠═f4748d85-5c7a-4781-ab52-c4ba57245a31
 # ╠═78bc3c87-cb8d-425b-916e-3e1cef6fd666
 # ╠═fe074266-8c79-4d87-972e-2f69f9249dae
 # ╠═71dfb83a-19bf-43f7-8481-808f983173bf
 # ╠═0c300d37-01b6-43de-aeb9-78f9ac7c2046
-# ╠═f4748d85-5c7a-4781-ab52-c4ba57245a31
 # ╠═c382ffa6-90bb-46c9-98c5-6ce94aac28b2
 # ╠═3713f2c3-0959-4587-968d-2be19d7e192e
+# ╠═0c959ecb-ea01-4542-8794-db273fbac4cd
 # ╠═eef5ad52-873d-4ca3-a470-8d8722ea5350
+# ╠═ec063e2a-845a-49f1-a489-b9e276e431de
 # ╠═468313e9-c3f2-4198-9188-395170fa4e37
 # ╠═18843812-e2c8-4985-8383-fa900f53f078
 # ╠═7979ed28-ff9f-460e-a556-a008bc9b200c
@@ -1684,8 +1739,10 @@ version = "0.9.1+5"
 # ╠═7337449e-d329-48b3-a0a5-f3e8eb4fa735
 # ╠═c7745aba-18c2-4cef-a9c2-062985c40083
 # ╠═ceda3ead-2960-4e5f-90fe-c62a2c7c7172
+# ╠═bc0a4010-433c-4890-98f4-4339bedc62ee
 # ╠═0ea4aa77-82f0-464b-ac06-3d27f27fd5a5
 # ╠═0fe05f85-05ed-42f1-87cb-e195af27f4c5
+# ╠═bab95968-1233-4c82-9ef0-ec621adc954c
 # ╠═08c067c9-99b3-4c05-a8e5-8eaddd9602ff
 # ╠═3f4531f5-bfd0-450c-ad10-49bc7b6da6fb
 # ╠═5a7d6e45-a7fd-486c-ae41-295745ac4205
@@ -1709,6 +1766,7 @@ version = "0.9.1+5"
 # ╠═60c94468-34c7-46ad-9d48-fc647c6ef292
 # ╠═bbd94a0a-26c0-4e3b-819d-cd5662f201b1
 # ╠═3da99c9f-6fd9-41c2-8f2e-3e2a7e38f8bb
+# ╠═52446eaa-8993-4141-8198-e52f4a305eca
 # ╟─7e3e9460-9078-446e-8eec-f68602726c1a
 # ╠═22c88270-1f9a-48bc-909a-4448b4d411e7
 # ╠═91b569b4-62a1-47d7-974c-041256540876
