@@ -276,10 +276,7 @@ md"""
 # ╔═╡ 39f6926e-3960-454a-832f-ff86804d56af
 
 
-# ╔═╡ f871ad94-c0c3-4829-9184-826d40728ce1
-
-
-# ╔═╡ ac676b44-ff07-4702-b59b-438ac06e78be
+# ╔═╡ 9aef3d30-95c8-479e-ab8f-84cc4c3444b9
 
 
 # ╔═╡ 595867f9-dc40-471d-8a8b-d02bf0b89f95
@@ -549,6 +546,34 @@ begin
 	r16, θ16 = v16(θ2s[n], θ3s[n], knowns)
 	Vecs2 = [Vec(r16, θ16), Vec(knowns["r6"], θ6s[n]), Vec(knowns["r5"], θ5s[n]), Vec(knowns["r15"], θ4s[n]), Vec(knowns["r1"], knowns["θ1"], -1)] 
 end
+
+# ╔═╡ f871ad94-c0c3-4829-9184-826d40728ce1
+begin
+	θ6_norm = θ6s
+
+	# Some values of θ6 are shifted 2π. Find values close to 
+	# 2π and return those angles minus 2π
+	θ6_norm = map(x-> x>1 ? x-2*pi : x, θ6_norm)
+
+	# Convert to Degrees
+	θ6_norm = θ6_norm .*(180/π)
+
+	θ2_norm = θ2s.*(180/π)
+	p1 = plot(θ2_norm, θ6_norm)
+	# (maximum(θ6_norm)-minimum(θ6_norm))*180/π
+	# xlims!(p1, (θmin, θmax))
+	ylims!(p1, (-0.25, 0.25))
+	xlabel!(p1, "θ2 (degrees)")
+	ylabel!(p1, "θ6 (degrees)")
+	title!(p1, "Angular rotation of tabletop as function of θ2")
+	plot!(legend=false)
+	savefig(p1, "angular_plot.png")
+	plot!(p1)
+
+end
+
+# ╔═╡ ac676b44-ff07-4702-b59b-438ac06e78be
+θ6s
 
 # ╔═╡ 0c300d37-01b6-43de-aeb9-78f9ac7c2046
 knowns["r2"]*sin(θ2s[n]) + knowns["r3"]/2*sin(θ3s[n]) + knowns["r6"]*sin(θ6s[n])
@@ -1703,6 +1728,7 @@ version = "0.9.1+5"
 # ╟─db329346-6d4e-4b4d-8b0e-cdda7fb48796
 # ╠═39f6926e-3960-454a-832f-ff86804d56af
 # ╠═d52626fa-71cd-4153-89e3-9acb882668a8
+# ╠═9aef3d30-95c8-479e-ab8f-84cc4c3444b9
 # ╠═f871ad94-c0c3-4829-9184-826d40728ce1
 # ╠═ac676b44-ff07-4702-b59b-438ac06e78be
 # ╠═7a056383-09df-4fd2-b9a5-08e5b045c372
