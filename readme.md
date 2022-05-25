@@ -1,4 +1,4 @@
-The mechanism simulation runs in a Julia notebook environment called `pluto`. The main code exists in a file called Library_Code.jl. 
+The mechanism simulation runs in a Julia notebook environment called `pluto`. The main code exists in a file called Final_Project.jl. 
 
 To run this notebook:
 1. Clone the repository onto your local machine. 
@@ -8,4 +8,4 @@ To run this notebook:
 5. Install pluto by running `add Pluto`
 6. Exit the package manager by pressing backspace
 7. Start a pluto server by running `using Pluto; Pluto.run()`
-8. Open Library_Code.jl  	
+8. Open Final_Project.jl  	
