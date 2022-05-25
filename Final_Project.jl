@@ -237,9 +237,6 @@ md"""
 # ╔═╡ c2f34512-74da-42af-849f-63009b52291a
 @vectors V1 V2 V3 V4 Vp1 V5 V15 V6 V26
 
-# ╔═╡ b79e7e19-1c12-4730-9c77-f8f21d1c4d56
-
-
 # ╔═╡ 7389633a-181d-411e-ae8d-d1c8d96cecc0
 function v16(θ2, θ3, knowns) 
 	r2 = knowns["r2"]
@@ -347,6 +344,9 @@ begin
 	θmin = 0.643
 	θmax = 1.683
 end
+
+# ╔═╡ b79e7e19-1c12-4730-9c77-f8f21d1c4d56
+(θmin, θmax)
 
 # ╔═╡ 1b05e8db-46e8-4394-a902-39cd06c36a97
 let
