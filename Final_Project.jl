@@ -524,6 +524,7 @@ begin
 end	
 
 # ╔═╡ ceda3ead-2960-4e5f-90fe-c62a2c7c7172
+# Use newton method to solve for theta 5 and theta 6 
 begin
 	y2 = []
 	Xi_2 = [5π/4; 0]
